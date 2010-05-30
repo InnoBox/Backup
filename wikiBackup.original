@@ -1,0 +1,52 @@
+#!/bin/sh
+
+#How many files do we want there to be per directory 
+FILEBUFFSIZE=$((21))
+FILESPER=$((3)) #Number of files created per backup
+
+backupdir=$1
+#backupdir="/home/andy/backup"
+LocalSettings="/etc/mediawiki/LocalSettings.php"
+dumpBackup="/usr/share/mediawiki/maintenance/dumpBackup.php"
+Images="/var/lib/mediawiki/images/"
+
+
+
+timestamp=$(date +%Y-%m-%d)
+
+echo "Dumping the MySQL Database"
+
+#Dump the MySQL database
+/usr/bin/nice -n 19 mysqldump -uroot -pc.elegans --add-drop-table wiki_db -c | /bin/gzip -9  --rsyncable > $backupdir/wiki-$DATABASE-$timestamp.sql.gz
+
+echo "Taring and the Gzipping the image files and LocalSettings"
+
+#Create a tar of all of the associate files:
+/usr/bin/nice -n 19 tar -czvf $backupdir/wiki-supportfiles-$timestamp.tgz $LocalSettings $Images
+
+
+sleep 1
+echo "Starting the XML Dump"
+
+/usr/bin/nice -n 19 php  $dumpBackup --full | gzip > $backupdir/wiki-XML-$timestamp.xml.gz
+
+
+#Count number of files in the directory
+NUMFILES=$(ls | wc -w)
+echo Found $NUMFILES
+###If there are too many files
+if [ $NUMFILES > $FILEBUFFSIZE ]; then
+	#Delete the three oldest
+	
+	for i in $( ls -t | tail -n 3); do 
+		rm $i
+	done
+
+fi
+
+echo "Finished"   
+exit 0
+
+
+
+
