@@ -1,25 +1,33 @@
 #!/bin/sh
 
-#How many files do we want there to be per directory 
-#FILEBUFFSIZE=$((21))
-#FILESPER=$((3)) #Number of files created per backup
+######### 
+#Variables
+#########
 
-backupdir=$1
-#backupdir="/home/andy/backup"
+backupdirname="InnoboxMediaWikiBackupv1"
+mountpt="/mnt/backup"
+
+backupPath=$mountpt/$backupdirname/
+
 LocalSettings="/etc/mediawiki/LocalSettings.php"
 dumpBackup="/usr/share/mediawiki/maintenance/dumpBackup.php"
 Images="/var/lib/mediawiki/images/"
+wikiPass=`cat/etc/mediawiki/wiki_password.txt`
+
+
+##########
+
+#########
 
 
 
-timestamp=$(date +%Y-%m-%d)
 
 echo "Dumping the MySQL Database"
 
 #Dump the MySQL database
-/usr/bin/nice -n 19 mysqldump -uroot -pc.elegans --add-drop-table wiki_db -c | /bin/gzip -9  --rsyncable > $backupdir/wiki-$DATABASE-$timestamp.sql.gz
+/usr/bin/nice -n 19 mysqldump -uwiki_user -p$wikiPass --add-drop-table wiki_db -c 
 
-echo "Taring and the Gzipping the image files and LocalSettings"
+echo "Taring the image files and LocalSettings"
 
 #Create a tar of all of the associate files:
 /usr/bin/nice -n 19 tar -czvf $backupdir/wiki-supportfiles-$timestamp.tgz $LocalSettings $Images
