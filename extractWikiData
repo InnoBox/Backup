@@ -16,11 +16,46 @@ wikiPass=`cat/etc/mediawiki/wiki_password.txt`
 
 
 ##########
-
+Delete old backup if we run low on space
 #########
 
+#modified from "Limit Disk Usage" script available at:
+#http://wiki.rdiff-backup.org/wiki/index.php/LimitDiskUsage
+#!/bin/bash
 
+# backup destination dir
+backupdir=/mnt/backups/foo
 
+# rdiff-backup binary
+rdiffbackup=/usr/bin/rdiff-backup
+
+# remove old increments from the backup as long as du reports
+# more bytes used by the backup dir than the following limit
+maxbytes=$((350 * 1024 * 1024 * 1024))
+
+# but never delete increments younger than the following limit in seconds
+keepseconds=$((7 * 60 * 60 * 24))
+
+# gather the list of timestamps of all backup increments into an array
+increments=($($rdiffbackup --list-increments --parsable-output $backupdir | grep -o "^\w*"))
+
+# while we still have at least two increments,
+# and we are allowed to delete the oldest increment,
+# and du reports more disk usage than allowed,
+# remove the oldest increment
+while ((
+  ${#increments[*]} > 1 &&
+  $(echo "$(date +%s) - ${increments[0]} > $keepseconds" | bc) == 1 &&
+  $(echo "$(du -k -s $backupdir | grep -o "^\w*") * 1024 > $maxbytes" | bc) == 1 ))
+do
+  $rdiffbackup --remove-older-than $(echo "${increments[0]} + 1" | bc) $backupdir || exit
+  unset increments[0]
+  increments=(${increments[*]})
+done
+
+########
+Extract Data From Wiki
+########
 
 echo "Dumping the MySQL Database"
 
@@ -35,6 +70,11 @@ echo "Taring the image files and LocalSettings"
 
 sleep 1
 echo "Starting the XML Dump"
+
+
+########
+Invoke rdiff backup
+$######
 
 /usr/bin/nice -n 19 php  $dumpBackup --full | gzip > $backupdir/wiki-XML-$timestamp.xml.gz
 
