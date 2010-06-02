@@ -1,0 +1,14 @@
+$def with (date)
+
+You have requested to restore your system to the state from $date.
+This procedure will erase all data after that time.  Only continue if you are
+sure that you want to perform the restore procedure.
+<br>
+Are you sure you want to restore the system to the state from $date ?
+<br>
+<form method="get">
+<button name="return">No, just return to main backup page</button>
+</form>
+<form method="post">
+<button name="reallyrestore">Yes, perform the restore procedure</button>
+</form>

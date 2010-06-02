@@ -1,0 +1,17 @@
+$def with (drivename, extras, restoreform)
+
+Nightly backup is enabled.  The current backup drive is $drivename.
+<br>
+<form name="backupbutton" method="post"> 
+<button name="backup">Force immediate backup</button>
+</form>
+$if extras:
+	<br>
+	WARNING: Additional backup drives detected.  Please remove all
+	backup drives other than the one you wish to use.
+<br>
+System backups are available for the following dates:
+<form name="restoreform" method="post">
+$:restoreform.render()
+<button name="restore">Restore the system to the selected date</button>
+</form>
