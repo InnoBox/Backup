@@ -18,6 +18,10 @@ def _is_backup(mp):
 	from os.path import join
 	return access(join(mp, MAGIC_FILE))
 
+def _get_backup_drives():
+	mountpoints = _get_mountpoints()
+	return filter(_is_backup, mountpoints)
+
 def is_enabled():
 	return True
 
@@ -25,7 +29,11 @@ def is_extra_drive():
 	return True
 
 def get_drivename():
-	return "The Backup Drive"
+	drives = _get_backup_drives()
+	if drives:
+		return drives[0]
+	else:
+		return None
 
 def get_dates():
 	return [str(i) for i in xrange(15)]
