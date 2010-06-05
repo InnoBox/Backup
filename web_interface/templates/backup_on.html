@@ -6,9 +6,19 @@ $if elapsed_backup is not None or elapsed_restore is not None:
 
 Nightly backup is enabled.  The current backup drive is $drivename.
 <br>
-<form name="backupbutton" method="post"> 
-<button name="backup">Force immediate backup</button>
-</form>
+$if elapsed_backup is None and elapsed_restore is None:
+	<form name="backupbutton" method="post"> 
+	<button name="backup">Force immediate backup</button>
+	</form>
+$elif elapsed_backup is not None:
+	<form name="backupbutton" method="post"> 
+	<button name="backup_disabled" disabled="disabled">Backup in progress</button>
+	</form>
+$else:
+	<form name="backupbutton" method="post"> 
+	<button name="backup_disabled" disabled="disabled">Restore in progress</button>
+	</form>
+
 $if extras:
 	<br>
 	WARNING: Additional backup drives detected.  Please remove all
@@ -21,5 +31,10 @@ $if elapsed_restore is not None:
 System backups are available for the following dates:
 <form name="restoreform" method="post">
 $:restoreform.render()
-<button name="restore">Restore the system to the selected date</button>
+$if elapsed_backup is None and elapsed_restore is None:
+	<button name="restore">Restore the system to the selected date</button>
+$elif elapsed_backup is not None:
+	<button name="restore_disabled" disabled="disabled">Backup in progress</button>	
+$else:
+	<button name="restore_disabled" disabled="disabled">Restore in progress</button>
 </form>
