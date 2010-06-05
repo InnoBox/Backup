@@ -18,8 +18,10 @@ class index:
 			name = innobackup.get_drivename()
 			dates = innobackup.get_dates()
 			extra_drive = innobackup.is_extra_drive()
+			elapsed_backup = innobackup.get_elapsed_backup()
+			elapsed_restore = innobackup.get_elapsed_restore()
 
-			return render.backup_on(name, extra_drive, restoreform(dates))
+			return render.backup_on(name, extra_drive, elapsed_backup, elapsed_restore, restoreform(dates))
 		else:
 			return render.backup_off()
 	def POST(self):

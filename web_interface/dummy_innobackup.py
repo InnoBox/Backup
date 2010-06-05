@@ -15,3 +15,10 @@ def start_backup():
 
 def start_restore(date):
 	return False
+
+def get_elapsed_backup():
+	return None
+
+def get_elapsed_restore():
+	from random import randint
+	return "Eleventeen hours and %d minutes" % randint(0,60)

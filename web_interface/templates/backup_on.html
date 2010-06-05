@@ -1,4 +1,8 @@
-$def with (drivename, extras, restoreform)
+$def with (drivename, extras, elapsed_backup, elapsed_restore, restoreform)
+<head>
+$if elapsed_backup is not None or elapsed_restore is not None:
+	<meta http-equiv="refresh" content="5">
+</head>
 
 Nightly backup is enabled.  The current backup drive is $drivename.
 <br>
@@ -9,6 +13,10 @@ $if extras:
 	<br>
 	WARNING: Additional backup drives detected.  Please remove all
 	backup drives other than the one you wish to use.
+$if elapsed_backup is not None:
+	<br>System backup in progress.  Elapsed time: $elapsed_backup
+$if elapsed_restore is not None:
+	<br>System restore in progress.  Elapsed time: $elapsed_restore
 <br>
 System backups are available for the following dates:
 <form name="restoreform" method="post">
