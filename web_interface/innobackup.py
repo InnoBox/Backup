@@ -68,6 +68,8 @@ def get_dates():
 _backup_command = "innobox_perform_backup"
 def start_backup():
 	"""Initiate the backup sequence, and return True iff backup has started correctly"""
+	if get_backup_elapsed() is not None or get_restore_elapsed is not None:
+		return False #failed to start because backup or restore is already running
 	from subprocess import Popen
 	Popen([_backup_command,_backupdir])
 	return True #return without waiting for it to complete!
@@ -79,6 +81,8 @@ def start_restore(date):
 	"""Initiate restoration from the specified date, and return True iff the restore has
 	started successfully.  This will only work if rdiff-backup supports timestamps
 	as rendered by ctime() (and returned by get_dates()).  Needs testing."""
+	if get_backup_elapsed() is not None or get_restore_elapsed is not None:
+		return False #failed to start because backup or restore is already running
 	#FIXME: Should ideally return False if the restore command is going to fail,
 	#for example because the specified date is invalid.  I don't know how to tell that
 	#that is the case at this time.
