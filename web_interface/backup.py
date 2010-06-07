@@ -10,7 +10,7 @@ app = web.application(urls, globals())
 render = web.template.render('templates/')
 
 def restoreform(dates):
-	return form.Form(form.Radio('date', dates, description='Available Backup Dates'))()
+	return form.Form(form.Dropdown('date', dates, description='Available Backup Dates'))()
 
 class index:
 	def GET(self):
