@@ -1,6 +1,5 @@
 #!/bin/sh
 
-tar xzvf web.py-*.tar.gz
-#This works because web.py-0.34 precedes web.py-0.34.tar.gz in the * expansion
-cd web.py-*
+tar xzvf /tmp/web.py-0.34.tar.gz
+cd web.py-0.34
 python setup.py install
