@@ -1,0 +1,3 @@
+#!/bin/sh
+
+innobox_perform_backup
