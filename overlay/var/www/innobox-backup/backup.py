@@ -1,6 +1,6 @@
 import web
 from web import form
-import dummy_innobackup as innobackup
+import innobackup
 
 urls = (
 	'/', 'index'
