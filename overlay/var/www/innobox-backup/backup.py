@@ -7,7 +7,11 @@ urls = (
 )
 
 app = web.application(urls, globals())
-render = web.template.render('templates/')
+application = app.wsgifunc() #the application variable is used by mod_wsgi
+
+from os.path import abspath, dirname, join
+rootdir = abspath(dirname(__file__))
+render = web.template.render(join(rootdir,'templates/'))
 
 def restoreform(dates):
 	return form.Form(form.Dropdown('date', dates, description='Available Backup Dates'))()
