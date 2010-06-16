@@ -3,9 +3,13 @@ import innobackup
 
 MIN_FREEFRAC = 0.5 # Minimum 50% free
 
+def path_exists(path):
+	from os import access, F_OK
+	return access(path, F_OK)
+
 def get_freefrac(path):
 	from os import statvfs
-	s = os.statvfs(path)
+	s = statvfs(path)
 	return float(s.f_bavail)/s.f_blocks
 
 def remove_oldest_increment(path):
@@ -24,11 +28,16 @@ def make_room(path):
 			error_detected = True
 	return error_detected
 
+def clear_if_empty(path):
+	if not innobackup.get_dates():
+		from shutil import rmtree
+		rmtree(path, ignore_errors=True)
+
 def dump_database(path):
 	from tempfile import mkdtemp
 	d = mkdtemp()
 	from os.path import join
-	dbfilename = os.path.join(d,"wiki_db.sql")
+	dbfilename = join(d,"wiki_db.sql")
 	f = open('/etc/mediawiki/wiki_password.txt')
 	wiki_password = f.read()
 	f.close()
@@ -41,7 +50,7 @@ def dump_database(path):
 
 def rdiff_backup(target):
 	sources = '/usr/share/innobackup/wiki_backup_list'
-	cmd = ['rdiff-backup','--include-filelist',sources,target]
+	cmd = ['rdiff-backup','--include-globbing-filelist',sources,'/',target]
 	from subprocess import Popen
 	p = Popen(cmd)
 	p.communicate() #wait for backup to finish
@@ -51,5 +60,17 @@ HOLDING_PATH='/innobackup/mediawiki/'
 
 dump_database(HOLDING_PATH)
 backupdir = innobackup.get_backupdir()
-make_room(backupdir)
+if path_exists(backupdir):
+	make_room(backupdir)
+# We call clear_if_empty because of the
+# "Fatal Error: Bad rdiff-backup-data dir on destination side"
+# problem.  If rdiff-backup finds that backupdir/rdiff-backup-data/
+# exists, but contains no current_mirror marker, it will abort.  Even
+# if invoked with --force, it will not proceed with backup.  This is
+# most likely to happen if the first backup fails partway through.  In
+# that event, there will be no available restore dates.  Thus,
+# clear_if_empty checks if there are any available restore dates.  If there
+# are none, we remove the backupdir entirely and start over from scratch.
+# This should avoid the problem.
+clear_if_empty(backupdir)	
 rdiff_backup(backupdir)

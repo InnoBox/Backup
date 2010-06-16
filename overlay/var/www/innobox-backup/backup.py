@@ -22,8 +22,8 @@ class index:
 			name = innobackup.get_drivename()
 			dates = innobackup.get_dates()
 			extra_drive = innobackup.is_extra_drive()
-			elapsed_backup = innobackup.get_elapsed_backup()
-			elapsed_restore = innobackup.get_elapsed_restore()
+			elapsed_backup = innobackup.get_backup_elapsed()
+			elapsed_restore = innobackup.get_restore_elapsed()
 
 			return render.backup_on(name, extra_drive, elapsed_backup, elapsed_restore, restoreform(dates))
 		else:
