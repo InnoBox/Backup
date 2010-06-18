@@ -36,15 +36,18 @@ class index:
 			else:
 				return render.backup_failure()
 		elif 'restore' in headers:
+			datecode = headers['date']
+			human_date = dict(innobackup.get_dates())[datecode]
 			if 'date' in headers:
-				return render.confirm_restore(headers['date'])
+				return render.confirm_restore(datecode,human_date)
 			else:
 				#if the user tries to perform a restore
 				#without selecting a date, just reload the
 				#page.
 				return self.GET()
 		elif 'reallyrestore' in headers:
-			if innobackup.start_restore(headers['date']):
+			datecode = headers['reallyrestore']
+			if innobackup.start_restore(datecode):
 				return render.restore_success()
 			else:
 				return render.restore_failure()
