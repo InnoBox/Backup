@@ -1,3 +1,4 @@
 #!/bin/sh
 
-innobox_perform_backup
+#run the backup script as the Apache user
+su -c innobox_perform_backup www-data

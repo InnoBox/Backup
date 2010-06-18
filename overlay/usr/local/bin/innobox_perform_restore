@@ -1,10 +1,14 @@
 #!/usr/bin/env python
-HOLDING_DIR = '/innobackup/mediawiki/'
+HOLDING_PATH = '/innobackup/mediawiki/'
 from os.path import join
-DB_FILE = join(HOLDING_DIR,'wiki_db.sql')
+DB_FILE = join(HOLDING_PATH,'wiki_db.sql')
 
 def rdiff_restore(repository, date):
-	cmd = ['rdiff-backup','--restore-as-of',str(date),repository,'/']
+	# the --force flag is required here in order to overwrite files that
+	# will likely be present in the target directory.
+	# FIXME: This has the potential to screw up backups in the unlikely
+	# scenario where backup and restore are occurring simultaneously.
+	cmd = ['rdiff-backup','--force','--restore-as-of',str(date),repository,HOLDING_PATH]
 	from subprocess import Popen
 	p = Popen(cmd)
 	p.communicate()
@@ -23,8 +27,14 @@ def get_password():
 	f.close()
 	return s
 
+def uncopy_localsettings():
+	from shutil import copy
+	from os.path import join
+	copy(join(HOLDING_PATH,'LocalSettings.php'),'/etc/mediawiki/')
+
 from sys import argv
 backupdir = argv[1]
 restoredate = argv[2]
 rdiff_restore(backupdir,restoredate)
+uncopy_localsettings()
 load_database(DB_FILE,get_password())

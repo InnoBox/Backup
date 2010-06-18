@@ -5,5 +5,5 @@ tar xzvf /tmp/web.py-0.34.tar.gz
 cd web.py-0.34
 python setup.py install
 
-echo "Making backup staging directory world-writeable"
-chmod a+rwx /innobackup/mediawiki
+echo "Making backup staging directory accessible to Apache"
+chown www-data /innobackup/mediawiki

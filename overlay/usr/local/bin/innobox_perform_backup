@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import innobackup
 
+HOLDING_PATH='/innobackup/mediawiki/'
 MIN_FREEFRAC = 0.5 # Minimum 50% free
 
 def path_exists(path):
@@ -33,6 +34,10 @@ def clear_if_empty(path):
 		from shutil import rmtree
 		rmtree(path, ignore_errors=True)
 
+def copy_localsettings(path):
+	from shutil import copy
+	copy('/etc/mediawiki/LocalSettings.php',path)
+
 def dump_database(path):
 	from tempfile import mkdtemp
 	d = mkdtemp()
@@ -45,20 +50,19 @@ def dump_database(path):
 	from subprocess import Popen
 	p = Popen(cmd,shell=True)
 	p.communicate() #wait for the process to finish
-	from shutil import move
+	from shutil import move, rmtree
 	move(dbfilename,path)
+	rmtree(d, ignore_errors=True) #clean up by removing temp directory
 
 def rdiff_backup(target):
-	sources = '/usr/share/innobackup/wiki_backup_list'
-	cmd = ['rdiff-backup','--include-globbing-filelist',sources,'/',target]
+	cmd = ['rdiff-backup',HOLDING_PATH,target]
 	from subprocess import Popen
 	p = Popen(cmd)
 	p.communicate() #wait for backup to finish
 	return p.returncode	
 
-HOLDING_PATH='/innobackup/mediawiki/'
-
 dump_database(HOLDING_PATH)
+copy_localsettings(HOLDING_PATH)
 backupdir = innobackup.get_backupdir()
 if path_exists(backupdir):
 	make_room(backupdir)
