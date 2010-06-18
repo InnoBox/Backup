@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import innobackup
 HOLDING_DIR = '/innobackup/mediawiki/'
 from os.path import join
 DB_FILE = join(HOLDING_DIR,'wiki_db.sql')
@@ -24,8 +23,8 @@ def get_password():
 	f.close()
 	return s
 
-backupdir = innobackup.get_backupdir()
 from sys import argv
-restoredate = argv[1]
+backupdir = argv[1]
+restoredate = argv[2]
 rdiff_restore(backupdir,restoredate)
 load_database(DB_FILE,get_password())
