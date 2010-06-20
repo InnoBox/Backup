@@ -7,3 +7,4 @@ python setup.py install
 
 echo "Making backup staging directory accessible to Apache"
 chown -R www-data /innobackup/mediawiki
+chown -R www-data /var/www/innobox-backup/banners
