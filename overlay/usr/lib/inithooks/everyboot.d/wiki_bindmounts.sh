@@ -2,7 +2,7 @@
 
 # The purpose of this script is to ensure that all files that we want
 # to be backed up for the wiki are available from inside
-# /innobackup/mediawiki.  This allows both backup and restore to be
+# /innobackup/mediawiki/data.  This allows both backup and restore to be
 # applied only to this directory, rather than to the root.  This is important
 # because rdiff-backup attempts to write temporary files to the root
 # of the restore target, even if no files need to be written there.
@@ -12,7 +12,7 @@
 # directories into one place is necessary in order for restore to run
 # without root permissions.
 
-HOLDING_DIR=/innobackup/mediawiki
+HOLDING_DIR=/innobackup/mediawiki/data
 
 # Don't need to chown /var/lib/mediawiki/images, since this is already
 # necessarily writeable by www-data

@@ -6,4 +6,4 @@ cd web.py-0.34
 python setup.py install
 
 echo "Making backup staging directory accessible to Apache"
-chown www-data /innobackup/mediawiki
+chown -R www-data /innobackup/mediawiki

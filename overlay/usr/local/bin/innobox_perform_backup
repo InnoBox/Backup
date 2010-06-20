@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import innobackup
 
-HOLDING_PATH='/innobackup/mediawiki/'
+HOLDING_PATH='/innobackup/mediawiki/data/'
 MIN_FREEFRAC = 0.5 # Minimum 50% free
 
 def path_exists(path):

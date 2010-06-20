@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-HOLDING_PATH = '/innobackup/mediawiki/'
+HOLDING_PATH = '/innobackup/mediawiki/data/'
 from os.path import join
 DB_FILE = join(HOLDING_PATH,'wiki_db.sql')
 
