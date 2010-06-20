@@ -2,6 +2,7 @@
 import innobackup
 
 HOLDING_PATH='/innobackup/mediawiki/data/'
+METADATA_PATH='/innobackup/mediawiki/metadata/'
 MIN_FREEFRAC = 0.5 # Minimum 50% free
 
 def path_exists(path):
@@ -69,6 +70,8 @@ def perform_backup():
 		return False
 	copy_localsettings(HOLDING_PATH)
 	backupdir = innobackup.get_backupdir()
+	if backupdir is None:
+		return False
 	if path_exists(backupdir):
 		make_room(backupdir)
 	# We call clear_if_empty because of the
@@ -84,4 +87,27 @@ def perform_backup():
 	clear_if_empty(backupdir)	
 	return rdiff_backup(backupdir):
 
-perform_backup()
+def update_success():
+	dates = innobackup.get_dates()
+	# get the most recent human-readable date
+	maxepoch = 0
+	corresponding_date = "None"
+	for epoch, date in dates:
+		if int(epoch) > maxepoch:
+			maxepoch = int(epoch)
+			corresponding_date = date
+	from os.path import join
+	f = open(join(METADATA_PATH,'most_recent_successful_backup'),'w')
+	f.write(corresponding_date)
+	f.close()
+
+def update_failure():
+	import time
+	f = open(join(METADATA_PATH,'most_recent_failed_backup'),'w')
+	f.write(time.asctime())
+	f.close()
+
+if perform_backup():
+	update_success()
+else:
+	update_failure()
