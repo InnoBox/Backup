@@ -89,25 +89,68 @@ def perform_backup():
 
 def update_success():
 	dates = innobackup.get_dates()
-	# get the most recent human-readable date
-	maxepoch = 0
-	corresponding_date = "None"
-	for epoch, date in dates:
-		if int(epoch) > maxepoch:
-			maxepoch = int(epoch)
-			corresponding_date = date
+	if dates:
+		maxepoch = str(max([int(e) for e,d in dates]))
+	else:
+		maxepoch = str(-1)
 	from os.path import join
 	f = open(join(METADATA_PATH,'most_recent_successful_backup'),'w')
-	f.write(corresponding_date)
+	f.write(maxepoch)
 	f.close()
 
 def update_failure():
 	import time
 	f = open(join(METADATA_PATH,'most_recent_failed_backup'),'w')
-	f.write(time.asctime())
+	f.write(int(time.time())) #Current epoch
 	f.close()
+
+def human_time(e):
+	if e < 0:
+		return "None"
+	else:
+		from time import ctime
+		return ctime(e)
+
+def process_templatefile(source,dest,subs):
+	f = open(source,'r')
+	s = f.read()
+	f.close()
+	s = s % subs
+	f = open(dest,'w')
+	f.write(s)
+	f.close()
+
+def update_banners():
+	f = open(join(METADATA_PATH,'most_recent_failed_backup'),'r')
+	failure_epoch = int(f.read())
+	f.close()
+	f = open(join(METADATA_PATH,'most_recent_successful_backup'),'r')
+	success_epoch = int(f.read())
+	f.close()
+	backup_enabled = (innobackup.get_backupdir() is not None)
+	info_url = '/backup'
+	substitutions = {'BF':human_time(failure_epoch),
+	                 'BS':human_time(success_epoch),
+	                 'MOREINFOPAGE':info_url}
+	if backup_enabled:
+		if success_epoch > failure_epoch:
+			# Everything is working
+			header = '/usr/share/innobox-backup/normal-header.html'
+			footer = '/usr/share/innobox-backup/normal-footer.html'
+		else:
+			# Fail!
+			header = '/usr/share/innobox-backup/fail-header.html'
+			footer = '/usr/share/innobox-backup/fail-footer.html'
+	else:
+		header = '/usr/share/innobox-backup/noHD-header.html'
+		footer = '/usr/share/innobox-backup/noHD-footer.html'
+	process_templatefile(header,'/var/www/innobox-backup/banners/header.html',substitutions)
+	process_templatefile(footer,'/var/www/innobox-backup/banners/footer.html',substitutions)
+
 
 if perform_backup():
 	update_success()
 else:
 	update_failure()
+
+update_banners()
