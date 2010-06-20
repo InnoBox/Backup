@@ -39,6 +39,8 @@ def copy_localsettings(path):
 	copy('/etc/mediawiki/LocalSettings.php',path)
 
 def dump_database(path):
+	""" Dump the sql database into a file in the specified directory
+            (path).  Return True iff the dump succeeded."""
 	from tempfile import mkdtemp
 	d = mkdtemp()
 	from os.path import join
@@ -53,28 +55,33 @@ def dump_database(path):
 	from shutil import move, rmtree
 	move(dbfilename,path)
 	rmtree(d, ignore_errors=True) #clean up by removing temp directory
+	return p.returncode == 0
 
 def rdiff_backup(target):
 	cmd = ['rdiff-backup',HOLDING_PATH,target]
 	from subprocess import Popen
 	p = Popen(cmd)
 	p.communicate() #wait for backup to finish
-	return p.returncode	
+	return p.returncode == 0
 
-dump_database(HOLDING_PATH)
-copy_localsettings(HOLDING_PATH)
-backupdir = innobackup.get_backupdir()
-if path_exists(backupdir):
-	make_room(backupdir)
-# We call clear_if_empty because of the
-# "Fatal Error: Bad rdiff-backup-data dir on destination side"
-# problem.  If rdiff-backup finds that backupdir/rdiff-backup-data/
-# exists, but contains no current_mirror marker, it will abort.  Even
-# if invoked with --force, it will not proceed with backup.  This is
-# most likely to happen if the first backup fails partway through.  In
-# that event, there will be no available restore dates.  Thus,
-# clear_if_empty checks if there are any available restore dates.  If there
-# are none, we remove the backupdir entirely and start over from scratch.
-# This should avoid the problem.
-clear_if_empty(backupdir)	
-rdiff_backup(backupdir)
+def perform_backup():
+	if not dump_database(HOLDING_PATH):
+		return False
+	copy_localsettings(HOLDING_PATH)
+	backupdir = innobackup.get_backupdir()
+	if path_exists(backupdir):
+		make_room(backupdir)
+	# We call clear_if_empty because of the
+	# "Fatal Error: Bad rdiff-backup-data dir on destination side"
+	# problem.  If rdiff-backup finds that backupdir/rdiff-backup-data/
+	# exists, but contains no current_mirror marker, it will abort.  Even
+	# if invoked with --force, it will not proceed with backup.  This is
+	# most likely to happen if the first backup fails partway through.  In
+	# that event, there will be no available restore dates.  Thus,
+	# clear_if_empty checks if there are any available restore dates.  If there
+	# are none, we remove the backupdir entirely and start over from scratch.
+	# This should avoid the problem.
+	clear_if_empty(backupdir)	
+	return rdiff_backup(backupdir):
+
+perform_backup()
