@@ -128,7 +128,7 @@ def update_banners():
 	success_epoch = int(f.read())
 	f.close()
 	backup_enabled = (innobackup.get_backupdir() is not None)
-	info_url = '/backup'
+	info_url = '/backupinfo'
 	substitutions = {'BF':human_time(failure_epoch),
 	                 'BS':human_time(success_epoch),
 	                 'MOREINFOPAGE':info_url}

@@ -1,0 +1,35 @@
+$def with (drivename, extras, elapsed_backup, elapsed_restore, dates, successtime, failtime, last_is_success)
+<head>
+$if elapsed_backup is not None or elapsed_restore is not None:
+	<meta http-equiv="refresh" content="5">
+</head>
+
+$if drivename is not None:
+	Nightly backup is enabled.  The current backup drive is $drivename.
+$else:
+	No backup drive recognized.  Backup is currently disabled.
+<br>
+Most recent successful backup: $successtime.
+<br>
+Most recent failed backup: $failtime.
+$if not last_is_success:
+	<br>
+	WARNING: Last backup failed.  Your backup system may not be
+	functioning properly.
+<br>
+
+$if extras:
+	<br>
+	WARNING: Additional backup drives detected.  Please remove all
+	backup drives other than the one you wish to use.
+$if elapsed_backup is not None:
+	<br>System backup in progress.  Elapsed time: $elapsed_backup
+$if elapsed_restore is not None:
+	<br>System restore in progress.  Elapsed time: $elapsed_restore
+<br>
+System backups are available for the following dates:
+$for epoch, date in dates:
+	<br>$date
+<br>
+If you are authorized to administer the backup and restore settings,
+you may <a href="/backup">click here</a> to do so.
