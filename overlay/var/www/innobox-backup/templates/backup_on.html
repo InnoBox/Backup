@@ -1,10 +1,18 @@
-$def with (drivename, extras, elapsed_backup, elapsed_restore, restoreform)
+$def with (drivename, extras, elapsed_backup, elapsed_restore, restoreform, successtime, failtime, last_is_success)
 <head>
 $if elapsed_backup is not None or elapsed_restore is not None:
 	<meta http-equiv="refresh" content="5">
 </head>
 
 Nightly backup is enabled.  The current backup drive is $drivename.
+<br>
+Most recent successful backup: $successtime.
+<br>
+Most recent failed backup: $failtime.
+$if not last_is_success:
+	<br>
+	WARNING: Last backup failed.  Your backup system may not be
+	functioning properly.
 <br>
 $if elapsed_backup is None and elapsed_restore is None:
 	<form name="backupbutton" method="post"> 

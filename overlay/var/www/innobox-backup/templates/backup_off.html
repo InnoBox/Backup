@@ -1,1 +1,10 @@
+$def with (successtime, failtime, last_is_success)
 No backup drive is attached.  Backup is currently disabled.
+<br>
+Last successful backup: $successtime
+<br>
+Last failed backup: $failtime
+<br>
+$if not last_is_success:
+	WARNING: Last backup failed.  You backup system may have experienced
+	a malfunction.
