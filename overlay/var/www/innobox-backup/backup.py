@@ -46,12 +46,23 @@ class index:
 				#without selecting a date, just reload the
 				#page.
 				return self.GET()
+		elif 'confirmrestore' in headers:
+			datecode = headers['confirmrestore']
+			human_date = dict(innobackup.get_dates())[datecode]
+			return render.really_restore(datecode,human_date)
 		elif 'reallyrestore' in headers:
-			datecode = headers['reallyrestore']
-			if innobackup.start_restore(datecode):
-				return render.restore_success()
+			if ('check1' in headers and
+			   'check2' in headers and
+			   'check3' in headers):
+				#The user has checked all the boxes and passed both confirmation
+				#pages, so now actually initiate the restore sequence.
+				datecode = headers['reallyrestore']
+				if innobackup.start_restore(datecode):
+					return render.restore_success()
+				else:
+					return render.restore_failure()
 			else:
-				return render.restore_failure()
+				return self.GET()
 
 if __name__ == "__main__": app.run()
 
