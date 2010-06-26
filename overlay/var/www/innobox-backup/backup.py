@@ -22,6 +22,7 @@ class index:
 		if innobackup.is_enabled():
 			name = innobackup.get_drivename()
 			dates = innobackup.get_dates()
+			dates.insert(0,("","No date selected"))
 			extra_drive = innobackup.is_extra_drive()
 			elapsed_backup = innobackup.get_backup_elapsed()
 			elapsed_restore = innobackup.get_restore_elapsed()
@@ -37,7 +38,9 @@ class index:
 			else:
 				return render.backup_failure()
 		elif 'restore' in headers:
-			if 'date' in headers:
+			if 'date' in headers and headers['date']:
+				# Having inserted ("", "No date selected") into dates above,
+				# we must only proceed with restore if a date has been selected
 				datecode = headers['date']
 				human_date = dict(innobackup.get_dates())[datecode]
 				return render.confirm_restore(datecode,human_date)
