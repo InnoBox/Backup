@@ -37,9 +37,9 @@ class index:
 			else:
 				return render.backup_failure()
 		elif 'restore' in headers:
-			datecode = headers['date']
-			human_date = dict(innobackup.get_dates())[datecode]
 			if 'date' in headers:
+				datecode = headers['date']
+				human_date = dict(innobackup.get_dates())[datecode]
 				return render.confirm_restore(datecode,human_date)
 			else:
 				#if the user tries to perform a restore
