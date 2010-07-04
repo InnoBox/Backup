@@ -1,4 +1,12 @@
 $def with (successtime, failtime, last_is_success)
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>
+InnoBox Backup Control
+</title>
+</head>
+<body>
 No backup drive is attached.  Backup is currently disabled.
 <br>
 Last successful backup: $successtime
@@ -8,3 +16,5 @@ Last failed backup: $failtime
 $if not last_is_success:
 	WARNING: Last backup failed.  You backup system may have experienced
 	a malfunction.
+</body>
+</html>

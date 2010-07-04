@@ -1,9 +1,14 @@
 $def with (drivename, extras, elapsed_backup, elapsed_restore, restoreform, successtime, failtime, last_is_success)
+<!DOCTYPE HTML>
+<html>
 <head>
+<title>
+InnoBox Backup Control
+</title>
 $if elapsed_backup is not None or elapsed_restore is not None:
 	<meta http-equiv="refresh" content="5">
 </head>
-
+<body>
 Nightly backup is enabled.  The current backup drive is $drivename.
 <br>
 Most recent successful backup: $successtime.
@@ -46,3 +51,5 @@ $elif elapsed_backup is not None:
 $else:
 	<button name="restore_disabled" disabled="disabled">Restore in progress</button>
 </form>
+</body>
+</html>

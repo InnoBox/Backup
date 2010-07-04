@@ -1,5 +1,12 @@
 $def with (datecode, human_date)
-
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>
+InnoBox Backup Control
+</title>
+</head>
+<body>
 You have requested to restore your system to the state from $human_date.
 This procedure will erase all data after that time.  Only continue if you are
 sure that you want to perform the restore procedure.
@@ -17,3 +24,5 @@ Are you sure you want to restore the system to the state from $human_date ?
 <form method="post">
 <button name="confirmrestore" value="$datecode">Yes, perform the restore procedure</button>
 </form>
+</body>
+</html>

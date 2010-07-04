@@ -1,9 +1,14 @@
 $def with (drivename, extras, elapsed_backup, elapsed_restore, dates, successtime, failtime, last_is_success)
+<!DOCTYPE HTML>
+<html>
 <head>
+<title>
+InnoBox Backup Information
+</title>
 $if elapsed_backup is not None or elapsed_restore is not None:
 	<meta http-equiv="refresh" content="5">
 </head>
-
+<body>
 $if drivename is not None:
 	Nightly backup is enabled.  The current backup drive is $drivename.
 $else:
@@ -33,3 +38,5 @@ $for epoch, date in dates:
 <br>
 If you are authorized to administer the backup and restore settings,
 you may <a href="/backup">click here</a> to do so.
+</body>
+</html>

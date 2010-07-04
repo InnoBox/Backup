@@ -1,5 +1,12 @@
 $def with (datecode, human_date)
-
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>
+InnoBox Backup Control
+</title>
+</head>
+<body>
 You are about to restore your system to the state from $human_date.
 Any changes made by any user after $human_date will be lost.
 <br>
@@ -17,3 +24,5 @@ the device.
 <input type="checkbox" name="check3" value="1"/>Yes, I am authorized by the owner of this system to initiate the restore procedure.
 <button name="reallyrestore" value="$datecode">Yes, perform the restore procedure</button>
 </form>
+</body>
+</html>
