@@ -5,16 +5,25 @@ $def with (datecode, human_date)
 <title>
 InnoBox Backup Control
 </title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
 </head>
+
 <body>
+<h1>InnoBox Backup Control - Confirm Restore Action</h1>
+
+<p>
 You have requested to restore your system to the state from $human_date.
 This procedure will erase all data after that time.  Only continue if you are
 sure that you want to perform the restore procedure.
-<br>
+</p>
+
+<p><div class="alertbox">
 WARNING: Any changes made BY ANY USER after $human_date WILL BE LOST!
-<br>
-Are you sure you want to restore the system to the state from $human_date ?
-<br>
+</div></p>
+
+<p><div class="controlbox">
+<p>Are you sure you want to restore the system to the state from $human_date ?</p>
+<p>
 <form method="get">
 <button name="return">No, just return to main backup page</button>
 </form>
@@ -24,5 +33,8 @@ Are you sure you want to restore the system to the state from $human_date ?
 <form method="post">
 <button name="confirmrestore" value="$datecode">Yes, perform the restore procedure</button>
 </form>
+</p>
+</div></p>
+
 </body>
 </html>

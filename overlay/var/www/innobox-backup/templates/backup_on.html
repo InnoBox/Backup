@@ -5,20 +5,29 @@ $def with (drivename, extras, elapsed_backup, elapsed_restore, restoreform, succ
 <title>
 InnoBox Backup Control
 </title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
 $if elapsed_backup is not None or elapsed_restore is not None:
 	<meta http-equiv="refresh" content="5">
 </head>
+
 <body>
-Nightly backup is enabled.  The current backup drive is $drivename.
-<br>
+<h1>InnoBox Backup Control - Main Page</h1>
+
+<p><div class="infobox">Nightly backup is enabled.  The current backup drive is $drivename.</div></p>
+
+<p><div class="infobox">
 Most recent successful backup: $successtime.
-<br>
+<br/>
 Most recent failed backup: $failtime.
+</div></p>
+
 $if not last_is_success:
-	<br>
+	<p><div class="alertbox">
 	WARNING: Last backup failed.  Your backup system may not be
 	functioning properly.
-<br>
+	</div></p>
+
+<p><div class="controlbox">
 $if elapsed_backup is None and elapsed_restore is None:
 	<form name="backupbutton" method="post"> 
 	<button name="backup">Force immediate backup</button>
@@ -31,16 +40,21 @@ $else:
 	<form name="backupbutton" method="post"> 
 	<button name="backup_disabled" disabled="disabled">Restore in progress</button>
 	</form>
+</div></p>
 
 $if extras:
-	<br>
+	<p><div class="alertbox">
 	WARNING: Additional backup drives detected.  Please remove all
 	backup drives other than the one you wish to use.
+	</div></p>
+
 $if elapsed_backup is not None:
-	<br>System backup in progress.  Elapsed time: $elapsed_backup
+	<p><div class="infobox">System backup in progress.  Elapsed time: $elapsed_backup</div></p>
+
 $if elapsed_restore is not None:
-	<br>System restore in progress.  Elapsed time: $elapsed_restore
-<br>
+	<p><div class="infobox">System restore in progress.  Elapsed time: $elapsed_restore</div></p>
+
+<p><div class="controlbox">
 System backups are available for the following dates:
 <form name="restoreform" method="post">
 $:restoreform.render()
@@ -51,5 +65,7 @@ $elif elapsed_backup is not None:
 $else:
 	<button name="restore_disabled" disabled="disabled">Restore in progress</button>
 </form>
+</div></p>
+
 </body>
 </html>

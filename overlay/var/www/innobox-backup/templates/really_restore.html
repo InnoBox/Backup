@@ -5,24 +5,40 @@ $def with (datecode, human_date)
 <title>
 InnoBox Backup Control
 </title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
 </head>
+
 <body>
+<h1>InnoBox Backup Control - Final Restore Confirmation</h1>
+
+<p>
 You are about to restore your system to the state from $human_date.
 Any changes made by any user after $human_date will be lost.
-<br>
+</p>
+
+<p><div class="alertbox">
 That's not something you want to do by accident.  This is your final chance
-to abort the restore procedure.  Are you sure you want to go ahead
+to abort the restore procedure.
+</div></p>
+
+<p><div class="controlbox">
+Are you sure you want to go ahead
 with the restore?
-<br>
+<br/>
 <form method="get">
 <button name="return">No, just return to main backup page</button>
 </form>
 <form method="post">
 <input type="checkbox" name="check1" value="1"/>Yes, I understand that performing the restore can result in data loss.
+<br/>
 <input type="checkbox" name="check2" value="1"/>Yes, I understand that this restore action will affect all users of
 the device.
+<br/>
 <input type="checkbox" name="check3" value="1"/>Yes, I am authorized by the owner of this system to initiate the restore procedure.
+<br/>
 <button name="reallyrestore" value="$datecode">Yes, perform the restore procedure</button>
 </form>
+</div></p>
+
 </body>
 </html>

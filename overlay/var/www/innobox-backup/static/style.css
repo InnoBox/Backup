@@ -1,0 +1,25 @@
+:root {
+  font-family: sans-serif;
+  background-color: #AAAAFF;
+  padding: 4em;
+}
+body {
+  background-color: white;
+  padding: 3em;
+  border: thick solid #0000AA;
+}
+.infobox {
+  background-color: #AAFFAA;
+  padding: 1em;
+  border: medium solid #00AA00;
+}
+.controlbox {
+  background-color: #FFEEAA;
+  padding: 1em;
+  border: medium solid orange;
+}
+.alertbox {
+  background-color: #FFAAAA;
+  padding: 1em;
+  border: medium solid #AA0000;
+}

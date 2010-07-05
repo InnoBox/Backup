@@ -1,0 +1,10 @@
+:root {
+  font-family: sans-serif;
+  background-color: #FFAAAA;
+  padding: 4em;
+}
+body {
+  background-color: white;
+  padding: 3em;
+  border: thick solid #AA0000;
+}

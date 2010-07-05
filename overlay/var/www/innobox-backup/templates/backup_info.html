@@ -5,38 +5,54 @@ $def with (drivename, extras, elapsed_backup, elapsed_restore, dates, successtim
 <title>
 InnoBox Backup Information
 </title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
 $if elapsed_backup is not None or elapsed_restore is not None:
 	<meta http-equiv="refresh" content="5">
 </head>
+
 <body>
+<h1>InnoBox Backup Information</h1>
 $if drivename is not None:
-	Nightly backup is enabled.  The current backup drive is $drivename.
+	<p><div class="infobox">Nightly backup is enabled.  The current backup drive is $drivename.</div></p>
 $else:
-	No backup drive recognized.  Backup is currently disabled.
-<br>
+	<p><div class="alertbox">No backup drive recognized.  Backup is currently disabled.</div></p>
+
+<p><div class="infobox">
 Most recent successful backup: $successtime.
-<br>
+<br/>
 Most recent failed backup: $failtime.
+</div></p>
+
 $if not last_is_success:
-	<br>
+	<p><div class="alertbox">
 	WARNING: Last backup failed.  Your backup system may not be
 	functioning properly.
-<br>
+	</div></p>
 
 $if extras:
-	<br>
+	<p><div class="alertbox">
 	WARNING: Additional backup drives detected.  Please remove all
 	backup drives other than the one you wish to use.
+	</div></p>
+
 $if elapsed_backup is not None:
-	<br>System backup in progress.  Elapsed time: $elapsed_backup
+	<p><div class="infobox">System backup in progress.  Elapsed time: $elapsed_backup</div></p>
+
 $if elapsed_restore is not None:
-	<br>System restore in progress.  Elapsed time: $elapsed_restore
-<br>
+	<p><div class="infobox">System restore in progress.  Elapsed time: $elapsed_restore</div></p>
+
+<p><div class="infobox">
 System backups are available for the following dates:
+<ol>
 $for epoch, date in dates:
-	<br>$date
-<br>
+	<li>$date</li>
+</ol>
+</div></p>
+
+<p>
 If you are authorized to administer the backup and restore settings,
 you may <a href="/backup">click here</a> to do so.
+</p>
+
 </body>
 </html>
