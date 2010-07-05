@@ -28,9 +28,12 @@ $if not last_is_success:
 	</div></p>
 
 <p><div class="controlbox">
+If you want to make a backup of the system in its present state, click here.
+A snapshot (restore point) of all system state will be recorded immediately
+to your backup drive. The system supports one backup or restore process at a time.
 $if elapsed_backup is None and elapsed_restore is None:
 	<form name="backupbutton" method="post"> 
-	<button name="backup">Force immediate backup</button>
+	<button name="backup">Trigger immediate backup</button>
 	</form>
 $elif elapsed_backup is not None:
 	<form name="backupbutton" method="post"> 
