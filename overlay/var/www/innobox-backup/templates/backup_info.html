@@ -13,9 +13,13 @@ $if elapsed_backup is not None or elapsed_restore is not None:
 <body>
 <h1>InnoBox Backup Information</h1>
 $if drivename is not None:
-	<p><div class="infobox">Nightly backup is enabled.  The current backup drive is $drivename.</div></p>
+	<p><div class="infobox">Nightly backup is enabled.  The current backup drive is mounted at $drivename.</div></p>
 $else:
-	<p><div class="alertbox">No backup drive recognized.  Backup is currently disabled.</div></p>
+	<p><div class="alertbox">
+	No backup drive recognized.  Backup is currently disabled.  If your backup
+	drive is correctly connected, then this may indicate that the drive has
+	experienced a hardware failure and must be replaced.
+	</div></p>
 
 <p><div class="infobox">
 Most recent successful backup: $successtime.

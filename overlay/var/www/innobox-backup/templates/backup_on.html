@@ -23,7 +23,7 @@ Most recent failed backup: $failtime.
 
 $if not last_is_success:
 	<p><div class="alertbox">
-	WARNING: Last backup failed.  Your backup system may not be
+	WARNING: Last backup failed.  Your backup drive may not be
 	functioning properly.
 	</div></p>
 
@@ -55,7 +55,8 @@ $if elapsed_restore is not None:
 	<p><div class="infobox">System restore in progress.  Elapsed time: $elapsed_restore</div></p>
 
 <p><div class="controlbox">
-System backups are available for the following dates:
+You can restore the system to a previous state by selecting one of the available
+restore points on the attached backup drive.
 <form name="restoreform" method="post">
 $:restoreform.render()
 $if elapsed_backup is None and elapsed_restore is None:
