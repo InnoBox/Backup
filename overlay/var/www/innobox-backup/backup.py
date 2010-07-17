@@ -20,21 +20,24 @@ class index:
 	def GET(self):
 		successtime, failtime, last_is_success = innobackup.get_date_claims()
 		if innobackup.is_enabled():
+			elapsed_backup = innobackup.get_backup_elapsed()
+			elapsed_restore = innobackup.get_restore_elapsed()
+			if elapsed_backup is not None or elapsed_restore is not None:
+				return render.operation_inprogress(elapsed_backup, elapsed_restore)
+			
 			name = innobackup.get_drivename()
 			dates = innobackup.get_dates()
 			dates.insert(0,("","No date selected"))
 			extra_drive = innobackup.is_extra_drive()
-			elapsed_backup = innobackup.get_backup_elapsed()
-			elapsed_restore = innobackup.get_restore_elapsed()
 
-			return render.backup_on(name, extra_drive, elapsed_backup, elapsed_restore, restoreform(dates), successtime, failtime, last_is_success)
+			return render.backup_on(name, extra_drive, restoreform(dates), successtime, failtime, last_is_success)
 		else:
 			return render.backup_off(successtime, failtime, last_is_success)
 	def POST(self):
 		headers = web.input()
 		if 'backup' in headers:
 			if innobackup.start_backup():
-				return render.backup_success()
+				return self.GET()
 			else:
 				return render.backup_failure()
 		elif 'restore' in headers:
@@ -61,7 +64,7 @@ class index:
 				#pages, so now actually initiate the restore sequence.
 				datecode = headers['reallyrestore']
 				if innobackup.start_restore(datecode):
-					return render.restore_success()
+					return self.GET()
 				else:
 					return render.restore_failure()
 			else:

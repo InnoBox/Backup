@@ -1,48 +1,53 @@
-$def with (drivename, extras, elapsed_backup, elapsed_restore, restoreform, successtime, failtime, last_is_success)
+$def with (drivename, extras, restoreform, successtime, failtime, last_is_success)
+<!DOCTYPE HTML>
+<html>
 <head>
-$if elapsed_backup is not None or elapsed_restore is not None:
-	<meta http-equiv="refresh" content="5">
+<title>
+InnoBox Backup Control
+</title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
 </head>
 
-Nightly backup is enabled.  The current backup drive is $drivename.
-<br>
+<body>
+<h1>InnoBox Backup Control - Main Page</h1>
+
+<p><div class="infobox">Nightly backup is enabled.  The current backup drive is $drivename.</div></p>
+
+<p><div class="infobox">
 Most recent successful backup: $successtime.
-<br>
+<br/>
 Most recent failed backup: $failtime.
+</div></p>
+
 $if not last_is_success:
-	<br>
-	WARNING: Last backup failed.  Your backup system may not be
+	<p><div class="alertbox">
+	WARNING: Last backup failed.  Your backup drive may not be
 	functioning properly.
-<br>
-$if elapsed_backup is None and elapsed_restore is None:
-	<form name="backupbutton" method="post"> 
-	<button name="backup">Force immediate backup</button>
-	</form>
-$elif elapsed_backup is not None:
-	<form name="backupbutton" method="post"> 
-	<button name="backup_disabled" disabled="disabled">Backup in progress</button>
-	</form>
-$else:
-	<form name="backupbutton" method="post"> 
-	<button name="backup_disabled" disabled="disabled">Restore in progress</button>
-	</form>
+	</div></p>
+
+<p><div class="controlbox">
+If you want to make a backup of the system in its present state, click here.
+A snapshot (restore point) of all system state will be recorded immediately
+to your backup drive. The system supports one backup or restore process at a time.
+<form name="backupbutton" method="post"> 
+<button name="backup">Trigger immediate backup</button>
+</form>
+</div></p>
 
 $if extras:
-	<br>
+	<p><div class="alertbox">
 	WARNING: Additional backup drives detected.  Please remove all
 	backup drives other than the one you wish to use.
-$if elapsed_backup is not None:
-	<br>System backup in progress.  Elapsed time: $elapsed_backup
-$if elapsed_restore is not None:
-	<br>System restore in progress.  Elapsed time: $elapsed_restore
-<br>
-System backups are available for the following dates:
+	</div></p>
+
+<p><div class="controlbox">
+You can restore the system to a previous state by selecting one of the available
+restore points on the attached backup drive.
 <form name="restoreform" method="post">
 $:restoreform.render()
-$if elapsed_backup is None and elapsed_restore is None:
-	<button name="restore">Restore the system to the selected date</button>
-$elif elapsed_backup is not None:
-	<button name="restore_disabled" disabled="disabled">Backup in progress</button>	
-$else:
-	<button name="restore_disabled" disabled="disabled">Restore in progress</button>
+<button name="restore">Restore the system to the selected date</button>
 </form>
+</div></p>
+
+</body>
+</html>

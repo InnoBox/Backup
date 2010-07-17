@@ -1,10 +1,34 @@
 $def with (successtime, failtime, last_is_success)
-No backup drive is attached.  Backup is currently disabled.
-<br>
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>
+InnoBox Backup Control
+</title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
+<link rel="stylesheet" href="/backup/static/failure-style.css"/>
+</head>
+
+<body>
+<h1>InnoBox Backup Control - Backup Disabled</h1>
+<p><div class="alertbox">
+No backup drive detected.  Backup is currently disabled.  Please check that your
+backup drive is correctly attached.  If you see this message while the drive is
+correctly attached, the drive may have experienced a hardware failure, in which
+case it must be replaced.
+</div></p>
+
+<p><div class="infobox">
 Last successful backup: $successtime
-<br>
+<br/>
 Last failed backup: $failtime
-<br>
+</div></p>
+
 $if not last_is_success:
+	<p><div class="alertbox">
 	WARNING: Last backup failed.  You backup system may have experienced
 	a malfunction.
+	</div></p>
+
+</body>
+</html>

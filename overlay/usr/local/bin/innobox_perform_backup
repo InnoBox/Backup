@@ -85,7 +85,7 @@ def perform_backup():
 	# are none, we remove the backupdir entirely and start over from scratch.
 	# This should avoid the problem.
 	clear_if_empty(backupdir)	
-	return rdiff_backup(backupdir):
+	return rdiff_backup(backupdir)
 
 def update_success():
 	dates = innobackup.get_dates()
@@ -100,8 +100,9 @@ def update_success():
 
 def update_failure():
 	import time
+	from os.path import join
 	f = open(join(METADATA_PATH,'most_recent_failed_backup'),'w')
-	f.write(int(time.time())) #Current epoch
+	f.write(str(int(time.time()))) #Current epoch
 	f.close()
 
 def human_time(e):
@@ -121,29 +122,36 @@ def process_templatefile(source,dest,subs):
 	f.close()
 
 def update_banners():
+	from os.path import join
 	f = open(join(METADATA_PATH,'most_recent_failed_backup'),'r')
-	failure_epoch = int(f.read())
+	try:
+		failure_epoch = int(f.read())
+	except ValueError:
+		failure_epoch = -1
 	f.close()
 	f = open(join(METADATA_PATH,'most_recent_successful_backup'),'r')
-	success_epoch = int(f.read())
+	try:
+		success_epoch = int(f.read())
+	except:
+		success_epoch = -1
 	f.close()
 	backup_enabled = (innobackup.get_backupdir() is not None)
-	info_url = '/backupinfo'
+	info_url = 'backupinfo'
 	substitutions = {'BF':human_time(failure_epoch),
 	                 'BS':human_time(success_epoch),
 	                 'MOREINFOPAGE':info_url}
 	if backup_enabled:
 		if success_epoch > failure_epoch:
 			# Everything is working
-			header = '/usr/share/innobox-backup/normal-header.html'
-			footer = '/usr/share/innobox-backup/normal-footer.html'
+			header = '/usr/share/innobackup/normal_header.html'
+			footer = '/usr/share/innobackup/normal_footer.html'
 		else:
 			# Fail!
-			header = '/usr/share/innobox-backup/fail-header.html'
-			footer = '/usr/share/innobox-backup/fail-footer.html'
+			header = '/usr/share/innobackup/fail_header.html'
+			footer = '/usr/share/innobackup/fail_footer.html'
 	else:
-		header = '/usr/share/innobox-backup/noHD-header.html'
-		footer = '/usr/share/innobox-backup/noHD-footer.html'
+		header = '/usr/share/innobackup/noHD_header.html'
+		footer = '/usr/share/innobackup/noHD_footer.html'
 	process_templatefile(header,'/var/www/innobox-backup/banners/header.html',substitutions)
 	process_templatefile(footer,'/var/www/innobox-backup/banners/footer.html',substitutions)
 
@@ -154,3 +162,5 @@ else:
 	update_failure()
 
 update_banners()
+from time import sleep
+sleep(4)
