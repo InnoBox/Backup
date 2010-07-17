@@ -3,7 +3,7 @@ $def with (drivename, extras, elapsed_backup, elapsed_restore, dates, successtim
 <html>
 <head>
 <title>
-InnoBox Backup Information
+InnoBox Backup Status Information
 </title>
 <link rel="stylesheet" href="/backup/static/style.css"/>
 $if elapsed_backup is not None or elapsed_restore is not None:
@@ -11,7 +11,7 @@ $if elapsed_backup is not None or elapsed_restore is not None:
 </head>
 
 <body>
-<h1>InnoBox Backup Information</h1>
+<h1>InnoBox Backup Status Information</h1>
 <div class ="navbar"><a href="/">Return to Device</a> <a href="/backup">Backup Controls</a> <a href="/backupinfo">Status</a></div>
 
 $if drivename is not None:
@@ -57,7 +57,7 @@ $for epoch, date in dates:
 
 <p>
 If you are authorized to administer the backup and restore settings,
-you may <a href="/backup">click here</a> to do so.
+you may do so on the <a href="/backup">Backup Controls page</a>.
 </p>
 
 </body>
