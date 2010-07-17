@@ -12,6 +12,8 @@ $if elapsed_backup is not None or elapsed_restore is not None:
 
 <body>
 <h1>InnoBox Backup Information</h1>
+<div class ="navbar"><a href="/">Return to Device</a> <a href="/backup">Backup Controls</a> <a href="/backupinfo">Status</a></div>
+
 $if drivename is not None:
 	<p><div class="infobox">Nightly backup is enabled.  The current backup drive is mounted at $drivename.</div></p>
 $else:
