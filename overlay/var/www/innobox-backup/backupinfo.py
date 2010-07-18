@@ -17,10 +17,13 @@ class index:
 	def GET(self):
 		successtime, failtime, last_is_success = innobackup.get_date_claims()
 		name = innobackup.get_drivename()
-		dates = innobackup.get_dates()
 		extra_drive = innobackup.is_extra_drive()
 		elapsed_backup = innobackup.get_backup_elapsed()
 		elapsed_restore = innobackup.get_restore_elapsed()
+		if elapsed_restore is None and elapsed_backup is None:
+			dates = innobackup.get_dates()
+		else:
+			dates = None
 		return render.backup_info(name, extra_drive, elapsed_backup, elapsed_restore, dates, successtime, failtime, last_is_success)
 
 if __name__ == "__main__": app.run()

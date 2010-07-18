@@ -1,0 +1,22 @@
+$def with (elapsed_backup, elapsed_restore)
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>
+InnoBox Backup Control
+</title>
+<link rel="stylesheet" href="/backup/static/style.css"/>
+<meta http-equiv="refresh" content="3"/>
+</head>
+
+<body>
+<h1>InnoBox Backup Control - Operation In Progress</h1>
+
+$if elapsed_backup is not None:
+	<p><div class="infobox">System backup in progress.  Elapsed time: $elapsed_backup</div></p>
+
+$if elapsed_restore is not None:
+	<p><div class="infobox">System restore in progress.  Elapsed time: $elapsed_restore</div></p>
+
+</body>
+</html>

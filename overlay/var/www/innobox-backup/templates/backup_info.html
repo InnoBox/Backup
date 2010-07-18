@@ -47,18 +47,22 @@ $if elapsed_backup is not None:
 $if elapsed_restore is not None:
 	<p><div class="infobox">System restore in progress.  Elapsed time: $elapsed_restore</div></p>
 
-<p><div class="infobox">
-System backups are available for the following dates:
-<ol>
-$for epoch, date in dates:
-	<li>$date</li>
-</ol>
-</div></p>
-
 <p>
 If you are authorized to administer the backup and restore settings,
-you may do so on the <a href="/backup">Backup Controls page</a>.
-</p>
+you may do so on the <a href="/backup">Backup Controls page</a>.</p>
+
+$if elapsed_backup is None and elapsed_restore is None:
+	<p><div class="infobox">
+	$if dates is None or len(dates)==0:
+		No system backups are available.
+	$else:
+		System backups are available for the following dates:
+		<ol>
+		$for epoch, date in dates:
+			<li>$date</li>
+		</ol>
+	</div></p>
+
 
 </body>
 </html>
