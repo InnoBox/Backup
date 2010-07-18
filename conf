@@ -10,4 +10,4 @@ chown -R www-data /innobackup/mediawiki
 chown -R www-data /var/www/innobox-backup/banners
 
 echo "Enabling mod_include"
-ln -s /etc/apache2/mods-available/include.load /etc/apache2/mods-enabled/
+ln -f -s /etc/apache2/mods-available/include.load /etc/apache2/mods-enabled/
