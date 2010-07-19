@@ -8,6 +8,10 @@ body {
   padding: 3em;
   border: thick solid #0000AA;
 }
+.navbar {
+  background-color: #CCCCCC;
+  padding: 1em;
+}
 .infobox {
   background-color: #AAFFAA;
   padding: 1em;
