@@ -1,3 +1,7 @@
 #!/bin/sh
 
-htpasswd -bc /innobackup/.htaccess backupadmin $1 && echo "Set password to $1"
+echo "Mounting actual target system on /target to add htaccess password file"
+mount /dev/sda1 /target
+htpasswd -bc /target/innobackup/.htaccess backupadmin $1 && echo "Set password to $1"
+umount /target
+echo "Unmounted target system"
