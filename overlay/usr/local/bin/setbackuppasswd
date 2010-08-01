@@ -1,0 +1,3 @@
+#!/bin/sh
+
+htpasswd -bc /innobackup/.htaccess backupadmin $1 && echo "Set password to $1"
