@@ -49,7 +49,7 @@ def dump_database(path):
 	f = open('/etc/mediawiki/wiki_password.txt')
 	wiki_password = f.read()
 	f.close()
-	cmd = "/usr/bin/nice -n 19 mysqldump -uwiki_user -p%s wiki_db -c > %s" % (wiki_password, dbfilename)
+	cmd = "/usr/bin/nice -n 19 mysqldump --add-drop-table -uwiki_user -p%s wiki_db -c > %s" % (wiki_password, dbfilename)
 	from subprocess import Popen
 	p = Popen(cmd,shell=True)
 	p.communicate() #wait for the process to finish
