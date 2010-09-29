@@ -9,6 +9,8 @@ echo "Making backup staging directory accessible to Apache"
 chown -R www-data /innobackup/mediawiki
 chown -R www-data /var/www/innobox-backup/banners
 
+echo "Enabling mod_filter"
+ln -f -s /etc/apache2/mods-available/filter.load /etc/apache2/mods-enabled/
 echo "Enabling mod_include"
 ln -f -s /etc/apache2/mods-available/include.load /etc/apache2/mods-enabled/
 echo "Enabling mod_substitute"
