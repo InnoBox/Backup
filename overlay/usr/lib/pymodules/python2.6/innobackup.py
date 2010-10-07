@@ -1,3 +1,18 @@
+#    Copyright 2010 InnoBox Devices <code@innoboxdevices.com>
+#    This file is part of InnoBox Backup.
+#
+#    InnoBox Backup is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    InnoBox Backup is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details. 
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with InnoBox Backup.  If not, see <http://www.gnu.org/licenses/>.
 def _get_mountpoints():
 	"""Get a list of all mountpoints that are potentially eligible to be backup drives"""
 	f = open('/etc/mtab','r')
