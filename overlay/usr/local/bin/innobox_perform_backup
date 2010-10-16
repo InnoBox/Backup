@@ -47,7 +47,7 @@ def dump_database(path):
 	from os.path import join
 	dbfilename = join(d,"wiki_db.sql")
 	f = open('/etc/mediawiki/wiki_password.txt')
-	wiki_password = f.read()
+	wiki_password = f.read().rstrip()
 	f.close()
 	cmd = "/usr/bin/nice -n 19 mysqldump --add-drop-table -uwiki_user -p%s wiki_db -c > %s" % (wiki_password, dbfilename)
 	from subprocess import Popen
