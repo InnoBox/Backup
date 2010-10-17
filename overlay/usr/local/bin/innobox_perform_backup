@@ -54,7 +54,11 @@ def dump_database(path):
 	p = Popen(cmd,shell=True)
 	p.communicate() #wait for the process to finish
 	from shutil import move, rmtree
-	move(dbfilename,path)
+	# We move the file to the explicitly specified target path because
+	# we require that move() overwrite the target file if it is present.
+	# move() will not overwrite an existing target file if the target
+	# is only specified as a directory.
+	move(dbfilename, join(path,"wiki_db.sql"))
 	rmtree(d, ignore_errors=True) #clean up by removing temp directory
 	return p.returncode == 0
 
