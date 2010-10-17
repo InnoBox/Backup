@@ -23,7 +23,7 @@ def load_database(filename, password):
 
 def get_password():
 	f = open('/etc/mediawiki/wiki_password.txt')
-	s = f.read()
+	s = f.read().rstrip()
 	f.close()
 	return s
 
